@@ -69,3 +69,19 @@ if (savedTodoList) {
         createTodo(savedTodoList[i]);
     }
 }
+
+//https://developer.mozilla.org/ko/docs/Web/API/Geolocation_API/Using_the_Geolocation_API
+const accessToGeo = function (position) {
+    const positionObj = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+    };
+    console.log(positionObj);
+};
+
+const askForLocation = function () {
+    navigator.geolocation.getCurrentPosition(accessToGeo, (err) => {
+        console.log(err);
+    });
+};
+askForLocation();
