@@ -70,13 +70,33 @@ if (savedTodoList) {
     }
 }
 
+//https://openweathermap.org/api/one-call-3
+const weatherSearch = function (position) {
+    console.log(position);
+    const openWeatherRes = fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&appid=ed1ec456a54bc0a0c2325120d85d86aa`
+    )
+        .then((res) => {
+            console.log(res);
+            return res.json();
+        })
+        .then((json) => {
+            console.log(json);
+            console.log(json.name, json.weather[0].description);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    console.log(openWeatherRes);
+};
+
 //https://developer.mozilla.org/ko/docs/Web/API/Geolocation_API/Using_the_Geolocation_API
 const accessToGeo = function (position) {
     const positionObj = {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
     };
-    console.log(positionObj);
+    weatherSearch(positionObj);
 };
 
 const askForLocation = function () {
