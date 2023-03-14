@@ -37,7 +37,7 @@ const createTodo = function (storageData) {
 };
 
 const keyCodeCheck = function () {
-    if (window.event.keyCode === 13 && todoInput.value !== "") {
+    if (window.event.keyCode === 13 && todoInput.value.trim() !== "") {
         createTodo();
     }
 };
@@ -70,31 +70,39 @@ if (savedTodoList) {
     }
 }
 
+const weatherDataActive = function ({ location, weather }) {
+    const locatinNameTag = document.querySelector("#location-name-tag");
+    locatinNameTag.textContent = location;
+    document.body.style.backgroundImage = `url('./images')`;
+};
+
 //https://openweathermap.org/api/one-call-3
-const weatherSearch = function (position) {
-    console.log(position);
+const weatherSearch = function ({ latitude, longitude }) {
     const openWeatherRes = fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&appid=ed1ec456a54bc0a0c2325120d85d86aa`
+        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=ed1ec456a54bc0a0c2325120d85d86aa`
     )
         .then((res) => {
-            console.log(res);
             return res.json();
         })
         .then((json) => {
-            console.log(json);
-            console.log(json.name, json.weather[0].description);
+            console.log(json.name, json.weather[0].main);
+            const weatherData = {
+                location: json.name,
+                weather: json.weather[0].main,
+            };
+            weatherDataActive(weatherData);
         })
         .catch((err) => {
             console.log(err);
         });
-    console.log(openWeatherRes);
 };
 
 //https://developer.mozilla.org/ko/docs/Web/API/Geolocation_API/Using_the_Geolocation_API
-const accessToGeo = function (position) {
+const accessToGeo = function ({ coords }) {
+    const { latitude, longitude } = coords;
     const positionObj = {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
+        latitude,
+        longitude,
     };
     weatherSearch(positionObj);
 };
