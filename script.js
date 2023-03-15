@@ -71,9 +71,12 @@ if (savedTodoList) {
 }
 
 const weatherDataActive = function ({ location, weather }) {
+    const weatherMainList = ["Clear", "Clouds", "Drizzle", "Rain", "Snow", "Fog", "Thunderstorm"];
+    weather = weatherMainList.includes(weather) ? weather : "test";
+
     const locatinNameTag = document.querySelector("#location-name-tag");
     locatinNameTag.textContent = location;
-    document.body.style.backgroundImage = `url('./images')`;
+    document.body.style.backgroundImage = `url('./images/${weather}.jpg')`;
 };
 
 //https://openweathermap.org/api/one-call-3
@@ -85,7 +88,6 @@ const weatherSearch = function ({ latitude, longitude }) {
             return res.json();
         })
         .then((json) => {
-            console.log(json.name, json.weather[0].main);
             const weatherData = {
                 location: json.name,
                 weather: json.weather[0].main,
