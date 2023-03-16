@@ -2,6 +2,7 @@ const todoInput = document.getElementById("todo-input");
 const todoList = document.getElementById("todo-list");
 
 const savedTodoList = JSON.parse(localStorage.getItem("saved-items"));
+const savedWeatherData = JSON.parse(localStorage.getItem("saved-weather"));
 
 const createTodo = function (storageData) {
     let todoContents = todoInput.value;
@@ -77,6 +78,10 @@ const weatherDataActive = function ({ location, weather }) {
     const locatinNameTag = document.querySelector("#location-name-tag");
     locatinNameTag.textContent = location;
     document.body.style.backgroundImage = `url('./images/${weather}.jpg')`;
+
+    if (!savedWeatherData || savedWeatherData.location !== location || savedWeatherData.weather !== weather) {
+        localStorage.setItem("saved-weather", JSON.stringify({ location, weather }));
+    }
 };
 
 //https://openweathermap.org/api/one-call-3
